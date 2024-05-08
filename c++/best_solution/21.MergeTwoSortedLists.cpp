@@ -11,51 +11,22 @@
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        // list1 혹은 list2가 nullptr일 경우 다른 list를 return 함
-        if (list1 == nullptr) return list2;
-        if (list2 == nullptr) return list1;
+        ListNode* dummy = new ListNode(0);
+        ListNode* cur = dummy;
 
-        // first node의 위치를 정함 (list1 or list2)
-        ListNode *first;
-        if(list1->val <= list2->val)
-        {
-            first = list1;
-            list1 = list1->next;
-        }
-        else
-        {
-            first = list2;
-            list2 = list2->next;
-        }
-
-        // firstnode의 주소값은 보존한체 계속 next를 target할 별도의 pointer 생성
-        auto target = first;
-        while (true)
-        {
-            if(list1 == nullptr)
-            {
-                target->next = list2;
-                break;
-            }
-            if(list2 == nullptr)
-            {
-                target->next = list1;
-                break;
-            }
-
-            if(list1->val <= list2->val)
-            {
-                target->next = list1;
+        while (list1 && list2) {
+            if (list1->val > list2->val) {
+                cur->next = list2;
+                list2 = list2->next;
+            } else {
+                cur->next = list1;
                 list1 = list1->next;
             }
-            else
-            {
-                target->next = list2;
-                list2 = list2->next;
-            }
-            target = target->next;
+            cur = cur->next;
         }
-        
-        return first;
+
+        cur->next = list1 ? list1 : list2;
+
+        return dummy->next;
     }
 };
